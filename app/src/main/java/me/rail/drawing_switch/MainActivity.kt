@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
@@ -18,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,15 +43,31 @@ fun Main() {
         modifier = Modifier
             .fillMaxSize(),
     ) {
-        BackgroundShape()
+        ColoredTrackSwitch()
     }
 }
 
 @Composable
-fun BackgroundShape() {
-    val disabledSwitchBackgroundColor = DrawingSwitchTheme.colors.disabledSwitchBackgroundColor
-    val switchColor = DrawingSwitchTheme.colors.switchColor
-    val enabledSwitchBackgroundColor = DrawingSwitchTheme.colors.enabledSwitchBackgroundColor
+fun ColoredTrackSwitch() {
+    val disabledTrackColor = Color(
+        red = 234,
+        green = 119,
+        blue = 92,
+    )
+    val thumbColor = Color(
+        red = 229,
+        green = 229,
+        blue = 229,
+    )
+    val enabledTrackColor = Color(
+        red = 57,
+        green = 189,
+        blue = 59,
+    )
+    
+    val trackWidth = 234.dp
+    val trackHeight = 100.dp
+    val thumbRadius = 43.dp
 
     val isEnabled = remember {
         mutableStateOf(
@@ -57,19 +75,35 @@ fun BackgroundShape() {
         )
     }
 
-    val backgroundColor by animateColorAsState(
-        targetValue = if (isEnabled.value) enabledSwitchBackgroundColor else disabledSwitchBackgroundColor,
+    val trackColor by animateColorAsState(
+        targetValue = if (isEnabled.value) {
+            enabledTrackColor
+        } else {
+            disabledTrackColor
+        },
         animationSpec = tween(
             durationMillis = 1000,
         ),
-        label = "BackgroundColorAnimation",
+        label = "TrackColorAnimation",
+    )
+
+    val thumbXPosition by animateDpAsState(
+        targetValue = if (isEnabled.value) {
+            trackWidth - (thumbRadius + 9.dp)
+        } else {
+            thumbRadius + 9.dp
+        },
+        animationSpec = tween(
+            durationMillis = 1000,
+        ),
+        label = "ThumbXPositionAnimation",
     )
 
     Canvas(
         modifier = Modifier
             .size(
-                width = 234.dp,
-                height = 100.dp,
+                width = trackWidth,
+                height = trackHeight,
             )
             .clickable {
                 isEnabled.value = !isEnabled.value
@@ -77,7 +111,7 @@ fun BackgroundShape() {
     ) {
         drawRoundRect(
             brush = SolidColor(
-                value = backgroundColor,
+                value = trackColor,
             ),
             cornerRadius = CornerRadius(
                 x = 60.dp.toPx(),
@@ -87,11 +121,11 @@ fun BackgroundShape() {
 
         drawCircle(
             brush = SolidColor(
-                value = switchColor,
+                value = thumbColor,
             ),
-            radius = 43.dp.toPx(),
+            radius = thumbRadius.toPx(),
             center = Offset(
-                x = 53.dp.toPx(),
+                x = thumbXPosition.toPx(),
                 y = center.y,
             )
         )
