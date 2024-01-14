@@ -2,6 +2,7 @@ package me.rail.drawing_switch
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
@@ -21,6 +22,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.rail.drawing_switch.ui.theme.DrawingSwitchTheme
+import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.sin
 
 private val thumbRadius = 59.dp
 
@@ -46,6 +50,18 @@ fun MathematicalSwitch() {
         )
     }
 
+    val color by animateColorAsState(
+        targetValue = if (isEnabled.value) {
+            enabledColor
+        } else {
+            disabledColor
+        },
+        animationSpec = tween(
+            durationMillis = 1000,
+        ),
+        label = "ColorAnimation",
+    )
+
     val thumbXPosition by animateDpAsState(
         targetValue = if (isEnabled.value) {
             trackWidth - (thumbRadius + 8.dp)
@@ -58,16 +74,27 @@ fun MathematicalSwitch() {
         label = "ThumbXPositionAnimation",
     )
 
-    val color by animateColorAsState(
-        targetValue = if (isEnabled.value) {
-            enabledColor
+    val plusAngleSine by animateFloatAsState(
+        targetValue = (if (isEnabled.value) {
+            sin(90 * PI / 180)
         } else {
-            disabledColor
-        },
+            sin(0 * PI / 180)
+        }).toFloat(),
         animationSpec = tween(
             durationMillis = 1000,
         ),
-        label = "ColorAnimation",
+        label = "PlusYPositionAnimation",
+    )
+    val plusAngleCosine by animateFloatAsState(
+        targetValue = (if (isEnabled.value) {
+            cos(90 * PI / 180)
+        } else {
+            cos(0 * PI / 180)
+        }).toFloat(),
+        animationSpec = tween(
+            durationMillis = 1000,
+        ),
+        label = "PlusYPositionAnimation",
     )
 
     Canvas(
@@ -92,18 +119,22 @@ fun MathematicalSwitch() {
 
         drawThumb(
             drawScope = this,
-            thumbXPosition = thumbXPosition,
             color = color,
+            thumbXPosition = thumbXPosition,
+            plusAngleSine = plusAngleSine,
+            plusAngleCosine = plusAngleCosine,
         )
     }
 }
 
 private fun drawThumb(
     drawScope: DrawScope,
-    thumbXPosition: Dp,
     color: Color,
+    thumbXPosition: Dp,
+    plusAngleSine: Float,
+    plusAngleCosine: Float,
 ) = with(drawScope) {
-    val minusWidth = 28.dp
+    val minusWidth = 62.dp
     val minusHeight = 10.dp
 
     drawCircle(
@@ -120,12 +151,26 @@ private fun drawThumb(
     drawLine(
         color = color,
         start = Offset(
-            x = (thumbXPosition - thumbRadius + minusWidth).toPx(),
+            x = (thumbXPosition - minusWidth / 2).toPx(),
             y = center.y,
         ),
         end = Offset(
-            x = (thumbXPosition + minusWidth).toPx(),
+            x = (thumbXPosition + minusWidth / 2).toPx(),
             y = center.y,
+        ),
+        strokeWidth = minusHeight.toPx(),
+        cap = StrokeCap.Round,
+    )
+
+    drawLine(
+        color = color,
+        start = Offset(
+            x = thumbXPosition.toPx() - plusAngleCosine * (minusWidth / 2).toPx(),
+            y = center.y - (minusWidth / 2).toPx() * plusAngleSine,
+        ),
+        end = Offset(
+            x = thumbXPosition.toPx() + plusAngleCosine * (minusWidth / 2).toPx(),
+            y = center.y + (minusWidth / 2).toPx() * plusAngleSine,
         ),
         strokeWidth = minusHeight.toPx(),
         cap = StrokeCap.Round,
