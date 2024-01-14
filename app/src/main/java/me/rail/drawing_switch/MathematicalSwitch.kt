@@ -3,6 +3,7 @@ package me.rail.drawing_switch
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
@@ -67,9 +68,16 @@ fun MathematicalSwitch() {
         } else {
             thumbRadius + 8.dp
         },
-        animationSpec = tween(
-            durationMillis = 1000,
-        ),
+        animationSpec = keyframes {
+            durationMillis = 1000
+            if (isEnabled.value) {
+                trackWidth - (thumbRadius + 4.dp) at 700
+                trackWidth - (thumbRadius + 12.dp) at 850
+            } else {
+                thumbRadius + 4.dp at 700
+                thumbRadius + 12.dp at 850
+            }
+        },
         label = "ThumbXPositionAnimation",
     )
 
