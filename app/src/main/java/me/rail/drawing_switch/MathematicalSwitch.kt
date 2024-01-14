@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.tooling.preview.Preview
@@ -108,9 +107,7 @@ fun MathematicalSwitch() {
             },
     ) {
         drawRoundRect(
-            brush = SolidColor(
-                value = color,
-            ),
+            color = color,
             cornerRadius = CornerRadius(
                 x = 100.dp.toPx(),
                 y = 100.dp.toPx(),
@@ -138,9 +135,7 @@ private fun drawThumb(
     val minusHeight = 10.dp
 
     drawCircle(
-        brush = SolidColor(
-            value = Color.White,
-        ),
+        color = Color.White,
         radius = thumbRadius.toPx(),
         center = Offset(
             x = thumbXPosition.toPx(),

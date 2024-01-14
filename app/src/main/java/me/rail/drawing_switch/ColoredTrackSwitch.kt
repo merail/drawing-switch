@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import me.rail.drawing_switch.ui.theme.DrawingSwitchTheme
@@ -82,9 +81,7 @@ fun ColoredTrackSwitch() {
             },
     ) {
         drawRoundRect(
-            brush = SolidColor(
-                value = trackColor,
-            ),
+            color = trackColor,
             cornerRadius = CornerRadius(
                 x = 60.dp.toPx(),
                 y = 60.dp.toPx(),
@@ -92,9 +89,7 @@ fun ColoredTrackSwitch() {
         )
 
         drawCircle(
-            brush = SolidColor(
-                value = thumbColor,
-            ),
+            color = thumbColor,
             radius = thumbRadius.toPx(),
             center = Offset(
                 x = thumbXPosition.toPx(),
