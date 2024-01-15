@@ -34,6 +34,8 @@ fun Main() {
         ColoredTrackSwitch()
 
         MathematicalSwitch()
+
+        DayAndNightSwitch()
     }
 }
 
