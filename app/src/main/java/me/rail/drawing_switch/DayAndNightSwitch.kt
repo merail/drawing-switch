@@ -5,6 +5,8 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -88,52 +90,59 @@ fun DayAndNightSwitch() {
         label = "TrackColorAnimation",
     )
 
-    Canvas(
+    Box(
         modifier = Modifier
-            .size(
-                width = trackWidth,
-                height = trackHeight,
-            )
-            .clickable {
-                isEnabled.value = !isEnabled.value
-            },
+            .padding(20.dp),
     ) {
-        drawRoundRect(
-            color = trackStrokeColor,
-            size = Size(
-                width = trackWidth.toPx(),
-                height = trackHeight.toPx(),
-            ),
-            cornerRadius = CornerRadius(
-                x = 100.dp.toPx(),
-                y = 100.dp.toPx(),
-            ),
-            style = Stroke(
-                width = trackStrokeWidth.toPx(),
-            ),
-        )
+        Canvas(
+            modifier = Modifier
+                .size(
+                    width = trackWidth,
+                    height = trackHeight,
+                )
+                .clickable {
+                    isEnabled.value = !isEnabled.value
+                },
+        ) {
+            drawRoundRect(
+                color = trackStrokeColor,
+                topLeft = Offset(
+                    x = (-trackStrokeWidth / 2).toPx(),
+                    y = (-trackStrokeWidth / 2).toPx(),
+                ),
+                size = Size(
+                    width = trackWidth.toPx() + trackStrokeWidth.toPx(),
+                    height = trackHeight.toPx() + trackStrokeWidth.toPx(),
+                ),
+                cornerRadius = CornerRadius(
+                    x = 100.dp.toPx(),
+                    y = 100.dp.toPx(),
+                ),
+            )
 
-        drawRoundRect(
-            color = trackColor,
-            topLeft = Offset(
-                x = 2.dp.toPx(),
-                y = 2.dp.toPx(),
-            ),
-            size = Size(
-                width = (trackWidth - 4.dp).toPx(),
-                height = (trackHeight - 4.dp).toPx(),
-            ),
-            cornerRadius = CornerRadius(
-                x = 100.dp.toPx(),
-                y = 100.dp.toPx(),
-            ),
-        )
+            drawRoundRect(
+                color = trackColor,
+                topLeft = Offset(
+                    x = (trackStrokeWidth / 2).toPx(),
+                    y = (trackStrokeWidth / 2).toPx(),
+                ),
+                size = Size(
+                    width = (trackWidth - trackStrokeWidth).toPx(),
+                    height = (trackHeight - trackStrokeWidth).toPx(),
+                ),
+                cornerRadius = CornerRadius(
+                    x = 100.dp.toPx(),
+                    y = 100.dp.toPx(),
+                ),
+            )
 
-        drawDisabledThumb(
-            drawScope = this,
-            trackTranslation = trackTranslation.toPx(),
-        )
+            drawDisabledThumb(
+                drawScope = this,
+                trackTranslation = trackTranslation.toPx(),
+            )
+        }
     }
+
 }
 
 private fun drawDisabledThumb(

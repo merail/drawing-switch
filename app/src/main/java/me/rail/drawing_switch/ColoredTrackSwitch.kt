@@ -5,6 +5,8 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -39,6 +41,7 @@ fun ColoredTrackSwitch() {
     val trackWidth = 234.dp
     val trackHeight = 100.dp
     val thumbRadius = 43.dp
+    val thumbPadding = 9.dp
 
     val isEnabled = remember {
         mutableStateOf(
@@ -60,9 +63,9 @@ fun ColoredTrackSwitch() {
 
     val thumbXPosition by animateDpAsState(
         targetValue = if (isEnabled.value) {
-            trackWidth - (thumbRadius + 9.dp)
+            trackWidth - (thumbRadius + thumbPadding)
         } else {
-            thumbRadius + 9.dp
+            thumbRadius + thumbPadding
         },
         animationSpec = tween(
             durationMillis = 1000,
@@ -70,32 +73,37 @@ fun ColoredTrackSwitch() {
         label = "ThumbXPositionAnimation",
     )
 
-    Canvas(
+    Box(
         modifier = Modifier
-            .size(
-                width = trackWidth,
-                height = trackHeight,
-            )
-            .clickable {
-                isEnabled.value = !isEnabled.value
-            },
+            .padding(20.dp)
     ) {
-        drawRoundRect(
-            color = trackColor,
-            cornerRadius = CornerRadius(
-                x = 60.dp.toPx(),
-                y = 60.dp.toPx(),
-            ),
-        )
-
-        drawCircle(
-            color = thumbColor,
-            radius = thumbRadius.toPx(),
-            center = Offset(
-                x = thumbXPosition.toPx(),
-                y = center.y,
+        Canvas(
+            modifier = Modifier
+                .size(
+                    width = trackWidth,
+                    height = trackHeight,
+                )
+                .clickable {
+                    isEnabled.value = !isEnabled.value
+                },
+        ) {
+            drawRoundRect(
+                color = trackColor,
+                cornerRadius = CornerRadius(
+                    x = 60.dp.toPx(),
+                    y = 60.dp.toPx(),
+                ),
             )
-        )
+
+            drawCircle(
+                color = thumbColor,
+                radius = thumbRadius.toPx(),
+                center = Offset(
+                    x = thumbXPosition.toPx(),
+                    y = center.y,
+                )
+            )
+        }
     }
 }
 
