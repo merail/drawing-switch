@@ -41,6 +41,10 @@ fun ColoredTrackSwitch() {
     val trackWidth = 234.dp
     val trackHeight = 100.dp
     val thumbRadius = 43.dp
+
+    /**
+     * @see <img width="510" height="231" src="https://raw.githubusercontent.com/merail/android-drawing-switch/main/colored_track_switch_samples/colored_track_switch_thumb_start_padding.png" alt="">
+     */
     val thumbPadding = 9.dp
 
     val isEnabled = remember {
