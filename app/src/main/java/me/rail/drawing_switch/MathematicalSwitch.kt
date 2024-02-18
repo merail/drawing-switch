@@ -7,6 +7,8 @@ import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,14 +24,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.rail.drawing_switch.ui.theme.DrawingSwitchTheme
-import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
-private val thumbRadius = 59.dp
-
 @Composable
 fun MathematicalSwitch() {
+    val isEnabled = remember {
+        mutableStateOf(
+            value = false,
+        )
+    }
+
     val disabledColor = Color(
         red = 121,
         green = 121,
@@ -40,16 +45,6 @@ fun MathematicalSwitch() {
         green = 94,
         blue = 90,
     )
-
-    val trackWidth = 234.dp
-    val trackHeight = 134.dp
-
-    val isEnabled = remember {
-        mutableStateOf(
-            value = false,
-        )
-    }
-
     val color by animateColorAsState(
         targetValue = if (isEnabled.value) {
             enabledColor
@@ -62,83 +57,107 @@ fun MathematicalSwitch() {
         label = "ColorAnimation",
     )
 
+    val trackWidth = 234.dp
+    val trackHeight = 134.dp
+    val thumbRadius = 59.dp
+    /**
+     * Description is in [ColoredTrackSwitch]
+     */
+    val thumbPadding = 8.dp
+    /**
+     * Description is in [ColoredTrackSwitch]
+     */
     val thumbXPosition by animateDpAsState(
         targetValue = if (isEnabled.value) {
-            trackWidth - (thumbRadius + 8.dp)
+            trackWidth - (thumbRadius + thumbPadding)
         } else {
-            thumbRadius + 8.dp
+            thumbRadius + thumbPadding
         },
         animationSpec = keyframes {
             durationMillis = 1000
             if (isEnabled.value) {
-                trackWidth - (thumbRadius + 4.dp) at 700
-                trackWidth - (thumbRadius + 12.dp) at 850
+                trackWidth - (thumbRadius + (thumbPadding - thumbPadding / 2)) at 700
+                trackWidth - (thumbRadius + (thumbPadding + thumbPadding / 2)) at 850
             } else {
-                thumbRadius + 4.dp at 700
-                thumbRadius + 12.dp at 850
+                thumbRadius + (thumbPadding - thumbPadding / 2) at 700
+                thumbRadius + (thumbPadding + thumbPadding / 2) at 850
             }
         },
         label = "ThumbXPositionAnimation",
     )
 
+    /**
+     * Sine for calculating the y coordinate when rotating one of the "minuses" from horizontal to vertical position and back
+     * @see <img width="258" height="285" src="https://raw.githubusercontent.com/merail/android-drawing-switch/main/samples/mathematical_switch_initial_state.png">
+     */
     val plusAngleSine by animateFloatAsState(
-        targetValue = (if (isEnabled.value) {
-            sin(90 * PI / 180)
-        } else {
-            sin(0 * PI / 180)
-        }).toFloat(),
+        targetValue = (
+            if (isEnabled.value) {
+                sin(Math.toRadians(90.0))
+            } else {
+                sin(Math.toRadians(180.0))
+            }
+        ).toFloat(),
         animationSpec = tween(
             durationMillis = 1000,
         ),
         label = "PlusYPositionAnimation",
     )
+    /**
+     * Cosine for calculating the y coordinate when rotating one of the "minuses" from horizontal to vertical position and back
+     * @see <img width="258" height="285" src="https://raw.githubusercontent.com/merail/android-drawing-switch/main/samples/mathematical_switch_finish_state.png">
+     */
     val plusAngleCosine by animateFloatAsState(
-        targetValue = (if (isEnabled.value) {
-            cos(90 * PI / 180)
-        } else {
-            cos(0 * PI / 180)
-        }).toFloat(),
+        targetValue = (
+            if (isEnabled.value) {
+                cos(Math.toRadians(90.0))
+            } else {
+                cos(Math.toRadians(180.0))
+            }
+        ).toFloat(),
         animationSpec = tween(
             durationMillis = 1000,
         ),
         label = "PlusYPositionAnimation",
     )
 
-    Canvas(
+    Box(
         modifier = Modifier
-            .size(
-                width = trackWidth,
-                height = trackHeight,
-            )
-            .clickable {
-                isEnabled.value = !isEnabled.value
-            },
+            .padding(20.dp),
     ) {
-        drawRoundRect(
-            color = color,
-            cornerRadius = CornerRadius(
-                x = 100.dp.toPx(),
-                y = 100.dp.toPx(),
-            ),
-        )
+        Canvas(
+            modifier = Modifier
+                .size(
+                    width = trackWidth,
+                    height = trackHeight,
+                )
+                .clickable {
+                    isEnabled.value = !isEnabled.value
+                },
+        ) {
+            drawRoundRect(
+                color = color,
+                cornerRadius = CornerRadius(trackHeight.toPx()),
+            )
 
-        drawThumb(
-            drawScope = this,
-            color = color,
-            thumbXPosition = thumbXPosition,
-            plusAngleSine = plusAngleSine,
-            plusAngleCosine = plusAngleCosine,
-        )
+            drawThumb(
+                color = color,
+                thumbRadius = thumbRadius,
+                thumbXPosition = thumbXPosition,
+                plusAngleSine = plusAngleSine,
+                plusAngleCosine = plusAngleCosine,
+            )
+        }
     }
 }
 
-private fun drawThumb(
-    drawScope: DrawScope,
+private fun DrawScope.drawThumb(
     color: Color,
+    thumbRadius: Dp,
     thumbXPosition: Dp,
     plusAngleSine: Float,
     plusAngleCosine: Float,
-) = with(drawScope) {
+) {
     val minusWidth = 62.dp
     val minusHeight = 10.dp
 
@@ -168,11 +187,11 @@ private fun drawThumb(
     drawLine(
         color = color,
         start = Offset(
-            x = thumbXPosition.toPx() - plusAngleCosine * (minusWidth / 2).toPx(),
+            x = thumbXPosition.toPx() + plusAngleCosine * (minusWidth / 2).toPx(),
             y = center.y - (minusWidth / 2).toPx() * plusAngleSine,
         ),
         end = Offset(
-            x = thumbXPosition.toPx() + plusAngleCosine * (minusWidth / 2).toPx(),
+            x = thumbXPosition.toPx() - plusAngleCosine * (minusWidth / 2).toPx(),
             y = center.y + (minusWidth / 2).toPx() * plusAngleSine,
         ),
         strokeWidth = minusHeight.toPx(),

@@ -22,6 +22,12 @@ import me.rail.drawing_switch.ui.theme.DrawingSwitchTheme
 
 @Composable
 fun ColoredTrackSwitch() {
+    val isEnabled = remember {
+        mutableStateOf(
+            value = false,
+        )
+    }
+
     val disabledTrackColor = Color(
         red = 234,
         green = 119,
@@ -37,22 +43,6 @@ fun ColoredTrackSwitch() {
         green = 189,
         blue = 59,
     )
-
-    val trackWidth = 234.dp
-    val trackHeight = 100.dp
-    val thumbRadius = 43.dp
-
-    /**
-     * @see <img width="510" height="231" src="https://raw.githubusercontent.com/merail/android-drawing-switch/main/colored_track_switch_samples/colored_track_switch_thumb_start_padding.png" alt="">
-     */
-    val thumbPadding = 9.dp
-
-    val isEnabled = remember {
-        mutableStateOf(
-            value = false,
-        )
-    }
-
     val trackColor by animateColorAsState(
         targetValue = if (isEnabled.value) {
             enabledTrackColor
@@ -65,6 +55,22 @@ fun ColoredTrackSwitch() {
         label = "TrackColorAnimation",
     )
 
+    val trackWidth = 234.dp
+    val trackHeight = 100.dp
+    val thumbRadius = 43.dp
+    /**
+     * Distance between thumb and track at the beginning and end of the track
+     * @see <img width="282" height="257" src="https://raw.githubusercontent.com/merail/android-drawing-switch/main/samples/start_padding.png">
+     * @see <img width="282" height="257" src="https://raw.githubusercontent.com/merail/android-drawing-switch/main/samples/end_padding.png">
+     */
+    val thumbPadding = 9.dp
+    /**
+     * X coordinate of thumb's movement. Varies in range
+     *
+     *      thumbRadius + thumbPadding..trackWidth - (thumbRadius + thumbPadding)
+     * @see <img width="282" height="257" src="https://raw.githubusercontent.com/merail/android-drawing-switch/main/samples/start_x_position.png">
+     * @see <img width="282" height="257" src="https://raw.githubusercontent.com/merail/android-drawing-switch/main/samples/end_x_position.png">
+     */
     val thumbXPosition by animateDpAsState(
         targetValue = if (isEnabled.value) {
             trackWidth - (thumbRadius + thumbPadding)
@@ -93,10 +99,7 @@ fun ColoredTrackSwitch() {
         ) {
             drawRoundRect(
                 color = trackColor,
-                cornerRadius = CornerRadius(
-                    x = 60.dp.toPx(),
-                    y = 60.dp.toPx(),
-                ),
+                cornerRadius = CornerRadius(trackHeight.toPx() / 2),
             )
 
             drawCircle(

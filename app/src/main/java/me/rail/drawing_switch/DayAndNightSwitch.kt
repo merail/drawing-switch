@@ -21,14 +21,18 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.rail.drawing_switch.ui.theme.DrawingSwitchTheme
 
-private val trackWidth = 234.dp
-private val trackHeight = 109.dp
-
 @Composable
 fun DayAndNightSwitch() {
+    val isEnabled = remember {
+        mutableStateOf(
+            value = false,
+        )
+    }
+
     val disabledTrackColor = Color(
         red = 77,
         green = 77,
@@ -45,15 +49,6 @@ fun DayAndNightSwitch() {
         green = 179,
         blue = 235,
     )
-
-    val trackStrokeWidth = 6.dp
-
-    val isEnabled = remember {
-        mutableStateOf(
-            value = false,
-        )
-    }
-
     val trackColor by animateColorAsState(
         targetValue = if (isEnabled.value) {
             enabledTrackColor
@@ -65,7 +60,6 @@ fun DayAndNightSwitch() {
         ),
         label = "TrackColorAnimation",
     )
-
     val trackStrokeColor by animateColorAsState(
         targetValue = if (isEnabled.value) {
             enabledTrackStrokeColor
@@ -77,6 +71,10 @@ fun DayAndNightSwitch() {
         ),
         label = "TrackStrokeColorAnimation",
     )
+
+    val trackWidth = 234.dp
+    val trackHeight = 109.dp
+    val trackStrokeWidth = 6.dp
 
     val trackTranslation by animateDpAsState(
         targetValue = if (isEnabled.value) {
@@ -115,8 +113,8 @@ fun DayAndNightSwitch() {
                     height = trackHeight.toPx() + trackStrokeWidth.toPx(),
                 ),
                 cornerRadius = CornerRadius(
-                    x = 100.dp.toPx(),
-                    y = 100.dp.toPx(),
+                    x = 58.dp.toPx(),
+                    y = 58.dp.toPx(),
                 ),
             )
 
@@ -131,13 +129,13 @@ fun DayAndNightSwitch() {
                     height = (trackHeight - trackStrokeWidth).toPx(),
                 ),
                 cornerRadius = CornerRadius(
-                    x = 100.dp.toPx(),
-                    y = 100.dp.toPx(),
+                    x = 52.dp.toPx(),
+                    y = 52.dp.toPx(),
                 ),
             )
 
             drawDisabledThumb(
-                drawScope = this,
+                trackWidth = trackWidth,
                 trackTranslation = trackTranslation.toPx(),
             )
         }
@@ -145,10 +143,10 @@ fun DayAndNightSwitch() {
 
 }
 
-private fun drawDisabledThumb(
-    drawScope: DrawScope,
+private fun DrawScope.drawDisabledThumb(
+    trackWidth: Dp,
     trackTranslation: Float,
-) = with(drawScope) {
+) {
     translate(
         left = trackTranslation,
     ) {
