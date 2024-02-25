@@ -1,4 +1,4 @@
-package me.rail.drawing_switch
+package me.rail.drawing_switch.colored_track_switch
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState

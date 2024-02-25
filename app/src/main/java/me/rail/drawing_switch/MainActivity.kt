@@ -10,6 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import me.rail.drawing_switch.colored_track_switch.ColoredTrackSwitch
+import me.rail.drawing_switch.day_and_night_switch.DayAndNightSwitch
+import me.rail.drawing_switch.mathematical_switch.MathematicalSwitch
 import me.rail.drawing_switch.ui.theme.DrawingSwitchTheme
 
 class MainActivity : ComponentActivity() {
