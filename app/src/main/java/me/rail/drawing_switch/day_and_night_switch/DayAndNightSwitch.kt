@@ -168,7 +168,7 @@ fun DayAndNightSwitch() {
             trackColor = trackColor,
         )
 
-        TrackDecoration(
+        DisabledTrackDecoration(
             isTrackDecorationVisible = isTrackDecorationVisible,
             modifier = modifier,
         )
@@ -188,6 +188,13 @@ fun DayAndNightSwitch() {
             modifier = modifier,
             thumbDecorationColor = disabledThumbStrokeColor,
             thumbTranslation = thumbTranslation,
+        )
+
+        EnabledTrackDecoration(
+            isTrackDecorationVisible = isTrackDecorationVisible,
+            modifier = modifier,
+            trackWidth = trackWidth,
+            trackHeight = trackHeight,
         )
     }
 }
