@@ -1,4 +1,4 @@
-package me.rail.drawing_switch.colored_track_switch
+package merail.drawing.switches.colored_track_switch
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
@@ -18,8 +18,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import me.rail.drawing_switch.ui.theme.DrawingSwitchTheme
+import merail.drawing.switches.ui.theme.DrawingSwitchTheme
 
+@Preview
 @Composable
 fun ColoredTrackSwitch() {
     val isEnabled = remember {
@@ -111,13 +112,5 @@ fun ColoredTrackSwitch() {
                 )
             )
         }
-    }
-}
-
-@Preview
-@Composable
-fun ColoredTrackSwitchPreview() {
-    DrawingSwitchTheme {
-        ColoredTrackSwitch()
     }
 }

@@ -1,4 +1,4 @@
-package me.rail.drawing_switch.day_and_night_switch
+package merail.drawing.switches.day_and_night_switch
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
@@ -15,8 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import me.rail.drawing_switch.ui.theme.DrawingSwitchTheme
+import merail.drawing.switches.ui.theme.DrawingSwitchTheme
 
+@Preview
 @Composable
 fun DayAndNightSwitch() {
     val isEnabled = remember {
@@ -196,13 +197,5 @@ fun DayAndNightSwitch() {
             trackWidth = trackWidth,
             trackHeight = trackHeight,
         )
-    }
-}
-
-@Preview
-@Composable
-fun DayAndNightSwitchPreview() {
-    DrawingSwitchTheme {
-        DayAndNightSwitch()
     }
 }

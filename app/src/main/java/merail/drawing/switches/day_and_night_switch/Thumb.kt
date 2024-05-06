@@ -1,4 +1,4 @@
-package me.rail.drawing_switch.day_and_night_switch
+package merail.drawing.switches.day_and_night_switch
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable

@@ -1,4 +1,4 @@
-package me.rail.drawing_switch
+package merail.drawing.switches
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,10 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import me.rail.drawing_switch.colored_track_switch.ColoredTrackSwitch
-import me.rail.drawing_switch.day_and_night_switch.DayAndNightSwitch
-import me.rail.drawing_switch.mathematical_switch.MathematicalSwitch
-import me.rail.drawing_switch.ui.theme.DrawingSwitchTheme
+import merail.drawing.switches.colored_track_switch.ColoredTrackSwitch
+import merail.drawing.switches.day_and_night_switch.DayAndNightSwitch
+import merail.drawing.switches.mathematical_switch.MathematicalSwitch
+import merail.drawing.switches.ui.theme.DrawingSwitchTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +26,9 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Preview(
+    showSystemUi = true,
+)
 @Composable
 fun Main() {
     Column(
@@ -39,15 +42,5 @@ fun Main() {
         MathematicalSwitch()
 
         DayAndNightSwitch()
-    }
-}
-
-@Preview(
-    showSystemUi = true,
-)
-@Composable
-fun MainPreview() {
-    DrawingSwitchTheme {
-        Main()
     }
 }

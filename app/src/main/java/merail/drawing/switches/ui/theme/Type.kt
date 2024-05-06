@@ -1,4 +1,4 @@
-package me.rail.drawing_switch.ui.theme
+package merail.drawing.switches.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

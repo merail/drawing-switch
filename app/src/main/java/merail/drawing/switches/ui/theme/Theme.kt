@@ -1,4 +1,4 @@
-package me.rail.drawing_switch.ui.theme
+package merail.drawing.switches.ui.theme
 
 import android.app.Activity
 import android.os.Build

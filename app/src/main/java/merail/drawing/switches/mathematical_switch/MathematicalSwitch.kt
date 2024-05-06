@@ -1,4 +1,4 @@
-package me.rail.drawing_switch.mathematical_switch
+package merail.drawing.switches.mathematical_switch
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
@@ -23,10 +23,11 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import me.rail.drawing_switch.ui.theme.DrawingSwitchTheme
+import merail.drawing.switches.ui.theme.DrawingSwitchTheme
 import kotlin.math.cos
 import kotlin.math.sin
 
+@Preview
 @Composable
 fun MathematicalSwitch() {
     val isEnabled = remember {
@@ -197,12 +198,4 @@ private fun DrawScope.drawThumb(
         strokeWidth = minusHeight.toPx(),
         cap = StrokeCap.Round,
     )
-}
-
-@Preview
-@Composable
-fun MathematicalSwitchPreview() {
-    DrawingSwitchTheme {
-        MathematicalSwitch()
-    }
 }
